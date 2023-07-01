@@ -2,6 +2,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import Image from "next/image";
 import { CreateTodo } from "~/components/CreateTodo";
+import { Todos } from "~/components/Todos";
 
 function Home() {
   const { data: sessionData, status } = useSession();
@@ -22,7 +23,7 @@ function Home() {
             // ローディングでない（認証情報を取得済み）かつ認証されている場合
             <>
               <div className="flex flex-col items-center">
-                <p className="mb-4 text-center text-lg">
+                <p className="mb-4 text-center text-lg text-white">
                   <span>Logged in as {sessionData.user?.email}</span>
                 </p>
                 <button
@@ -34,6 +35,7 @@ function Home() {
               </div>
               <div>
                 <CreateTodo />
+                <Todos />
               </div>
             </>
           )}

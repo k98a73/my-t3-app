@@ -32,7 +32,7 @@ export function Todo({ todo }: TodoProps) {
   });
 
   return (
-    <div className="flex items-center justify-center rounded-md border-2 border-gray-one px-5 py-4">
+    <div className="flex items-center justify-between rounded-md border-2 border-gray-one px-5 py-4">
       <div className="flex w-full max-w-lg items-center justify-start">
         <input
           className="h-4 w-4 rounded border border-gray-three bg-cream-four text-green-four focus:border-green-five focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-green-five"
@@ -45,7 +45,7 @@ export function Todo({ todo }: TodoProps) {
           }}
         />
         <input
-          className="ml-5 flex-1 text-ellipsis rounded-none border-x-0 border-t-0 border-b-gray-two bg-cream-four px-0 pb-1 text-base font-normal text-gray-three placeholder:text-gray-two focus:border-gray-three focus:outline-none focus:ring-0"
+          className="ml-5 flex-1 text-ellipsis rounded-none border-x-0 border-b border-t-0 border-dashed border-b-gray-two bg-cream-four px-0 pb-1 text-base font-normal text-gray-three placeholder:text-gray-two focus:border-gray-three focus:outline-none focus:ring-0"
           id={`${todo.id}-text`}
           type="text"
           placeholder="Enter a todo"

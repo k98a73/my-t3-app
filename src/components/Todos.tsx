@@ -1,5 +1,6 @@
 import { api } from "~/utils/api";
 import { Todo } from "./Todo";
+import { ProgressBar } from "./ProgressBar";
 
 export function Todos() {
   const { data: todos, isLoading, isError } = api.todo.all.useQuery();
@@ -9,7 +10,7 @@ export function Todos() {
       <div className="flex items-center justify-center">
         <div
           style={{ borderTopColor: "transparent" }}
-          className="border-blue-200 mt-32 h-10 w-10 animate-spin rounded-full border-4"
+          className="mt-32 h-10 w-10 animate-spin rounded-full border-4 border-blue-200"
         >
           <p className="ml-4 mt-32 text-xl">loading...</p>
         </div>
@@ -24,13 +25,14 @@ export function Todos() {
 
   return (
     <>
-    {todos.map((todo) => {
-      return (
-        <section key={todo.id} className="mt-8 space-y-4">
-          <Todo todo={todo} />
-        </section>
-      )
-    })}
+      {todos.map((todo) => {
+        return (
+          <section key={todo.id} className="mt-8 space-y-4">
+            <Todo todo={todo} />
+          </section>
+        );
+      })}
+      <ProgressBar todos={todos} />
     </>
-  )
+  );
 }

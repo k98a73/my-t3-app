@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { toast } from "react-hot-toast";
-import { createInput } from "~/server/type";
+import { type Todo, createInput } from "~/server/type";
 import { api } from "~/utils/api";
 
 export function CreateTodo() {
@@ -8,7 +8,33 @@ export function CreateTodo() {
 
   const trpc = api.useContext();
   const { mutate } = api.todo.create.useMutation({
+    // mutationの実行前に発火（処理の成否は問わない）
+    onMutate: async (newTodo) => {
+      // キャッシュが上書きされない様にクエリをキャンセル
+      await trpc.todo.all.cancel();
+      const previousTodo = trpc.todo.all.getData();
+      trpc.todo.all.setData(undefined, (prev) => {
+        const optimisticTodo: Todo = {
+          id: "optimistic-todo-id",
+          text: newTodo,
+          isCompleted: false,
+        };
+        if (!prev) return [optimisticTodo];
+        return [optimisticTodo, ...prev];
+      });
+      setNewTodo("");
+      return { previousTodo };
+    },
+    onError: (err, newTodo, context) => {
+      toast.error("An error occurred when creating todo");
+      console.error(err);
+      setNewTodo(newTodo);
+      if (!context) return;
+      trpc.todo.all.setData(undefined, () => context.previousTodo);
+    },
+    // mutationの成否関わらず、必ず実行
     onSettled: async () => {
+      // キャッシュが古くなったとみなし、最新のデータを取得
       await trpc.todo.all.invalidate();
     },
   });
